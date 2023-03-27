@@ -1,6 +1,7 @@
 ﻿using Explorer700Library;
 using System;
 using System.Drawing;
+using System.Threading;
 
 namespace Explorer700Demo
 {
@@ -26,8 +27,10 @@ namespace Explorer700Demo
             
             char currentPlayer = PLAYER_1;
 
+            int col = 2;
+            int row = 0;
             // Draw the initial Tic Tac Toe board on the screen
-            DrawBoard(screen, board);
+            DrawBoard(screen, board, (col, row));
 
             // Play the game
             bool gameOver = false;
@@ -35,8 +38,6 @@ namespace Explorer700Demo
             {
                 // Wait for player 1 to move
                 bool moveMade = false;
-                int col = 2;
-                int row = 0;
                 while (!moveMade)
                 {
                     Keys keys = exp.Joystick.Keys;
@@ -68,7 +69,8 @@ namespace Explorer700Demo
                     }
 
                     // Update the display
-                    DrawBoard(screen, board);
+                    DrawBoard(screen, board, (col, row));
+                    Thread.Sleep(100);
                 }
 
                 // Check for a win or tie
@@ -89,8 +91,9 @@ namespace Explorer700Demo
             Console.ReadKey();
         }
 
-        static void DrawBoard(Graphics screen, char[,] board)
+        static void DrawBoard(Graphics screen, char[,] board, (int col, int row) currentCoords)
         {
+            //TODO: color cufrent position differently
             screen.Clear(Color.Black);
             screen.DrawString(" " + board[0, 0] + " | " + board[0, 1] + " | " + board[0, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 0);
             screen.DrawString("--+--+--", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 10);
