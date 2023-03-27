@@ -10,6 +10,9 @@ namespace Explorer700Demo
     public class Program
     {
         static Explorer700 exp = new Explorer700();
+        static char PLAYER_1 = 'X';
+        static char PLAYER_2 = 'O';
+
         static void Main(string[] args)
         {
             // Set up the screen
@@ -23,9 +26,8 @@ namespace Explorer700Demo
             };
 
             // Define the players
-            char player1 = 'X';
-            char player2 = 'O';
-            char currentPlayer = player1;
+            
+            char currentPlayer = PLAYER_1;
 
             // Draw the initial Tic Tac Toe board on the screen
             DrawBoard(screen, board);
@@ -34,90 +36,42 @@ namespace Explorer700Demo
             bool gameOver = false;
             while (!gameOver)
             {
-                // Player 1's turn
-                if (currentPlayer == 'X')
+                // Wait for player 1 to move
+                bool moveMade = false;
+                int col = 2;
+                int row = 0;
+                while (!moveMade)
                 {
-                    // Wait for player 1 to move
-                    bool moveMade = false;
-                    while (!moveMade)
+                    Keys keys = exp.Joystick.Keys;
+                        
+
+                    // Check for joystick movements
+                    if ((keys & Keys.Left) != 0 && col > 0)
                     {
-                        Keys keys = exp.Joystick.Keys;
-
-                        // Check for joystick movements
-                        if ((keys & Keys.Left) != 0 && col > 0)
-                        {
-                            col--;
-                            moveMade = true;
-                        }
-                        else if ((keys & Keys.Right) != 0 && col < 2)
-                        {
-                            col++;
-                            moveMade = true;
-                        }
-                        else if ((keys & Keys.Up) != 0 && row > 0)
-                        {
-                            row--;
-                            moveMade = true;
-                        }
-                        else if ((keys & Keys.Down) != 0 && row < 2)
-                        {
-                            row++;
-                            moveMade = true;
-                        }
-                        else if ((keys & Keys.Center) != 0 && board[row, col] == '-')
-                        {
-                            // Valid move, place X on board and switch to player 2
-                            board[row, col] = 'X';
-                            currentPlayer = 'O';
-                            moveMade = true;
-                        }
-
-                        // Update the display
-                        DrawBoard(board);
+                        col--;
                     }
-                }
-
-                // Player 2's turn
-                else if (currentPlayer == 'O')
-                {
-                    // Wait for player 2 to move
-                    bool moveMade = false;
-                    while (!moveMade)
+                    else if ((keys & Keys.Right) != 0 && col < 2)
                     {
-                        Keys keys = joystick.Keys;
-
-                        // Check for joystick movements
-                        if ((keys & Keys.Left) != 0 && col > 0)
-                        {
-                            col--;
-                            moveMade = true;
-                        }
-                        else if ((keys & Keys.Right) != 0 && col < 2)
-                        {
-                            col++;
-                            moveMade = true;
-                        }
-                        else if ((keys & Keys.Up) != 0 && row > 0)
-                        {
-                            row--;
-                            moveMade = true;
-                        }
-                        else if ((keys & Keys.Down) != 0 && row < 2)
-                        {
-                            row++;
-                            moveMade = true;
-                        }
-                        else if ((keys & Keys.Center) != 0 && board[row, col] == '-')
-                        {
-                            // Valid move, place O on board and switch to player 1
-                            board[row, col] = 'O';
-                            currentPlayer = 'X';
-                            moveMade = true;
-                        }
-
-                        // Update the display
-                        DrawBoard(board);
+                        col++;
                     }
+                    else if ((keys & Keys.Up) != 0 && row > 0)
+                    {
+                        row--;
+                    }
+                    else if ((keys & Keys.Down) != 0 && row < 2)
+                    {
+                        row++;
+                    }
+                    else if ((keys & Keys.Center) != 0 && board[row, col] == '-')
+                    {
+                        // Valid move, place X on board and switch to player 2
+                        board[row, col] = currentPlayer;
+                        currentPlayer = getNextPlayer(currentPlayer);
+                        moveMade = true;
+                    }
+
+                    // Update the display
+                    DrawBoard(screen, board);
                 }
 
                 // Check for a win or tie
@@ -138,15 +92,20 @@ namespace Explorer700Demo
             Console.ReadKey();
         }
 
-        static void DrawBoard(System.Drawing.Graphics screen, char[,] board)
+        static void DrawBoard(Graphics screen, char[,] board)
         {
-            screen.Clear(exp.Display.Color.Black);
-            screen.DrawString(" " + board[0, 0] + " | " + board[0, 1] + " | " + board[0, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), exp.Display.Brushes.White, 0, 0);
-            screen.DrawString("---+---+---", new Font(FontFamily.GenericSansSerif, 10), Exp.Display.Brushes.White, 0, 10);
-            screen.DrawString(" " + board[1, 0] + " | " + board[1, 1] + " | " + board[1, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), exp.Display.Brushes.White, 0, 20);
-            screen.DrawString("---+---+---", new Font(FontFamily.GenericSansSerif, 10), Exp.Display.Brushes.White, 0, 30);
-            screen.DrawString(" " + board[2, 0] + " | " + board[2, 1] + " | " + board[2, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), exp.Display.Brushes.White, 0, 40);
+            screen.Clear(Color.Black);
+            screen.DrawString(" " + board[0, 0] + " | " + board[0, 1] + " | " + board[0, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 0);
+            screen.DrawString("---+---+---", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 10);
+            screen.DrawString(" " + board[1, 0] + " | " + board[1, 1] + " | " + board[1, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 20);
+            screen.DrawString("---+---+---", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 30);
+            screen.DrawString(" " + board[2, 0] + " | " + board[2, 1] + " | " + board[2, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 40);
             exp.Display.Update();
+        }
+
+        static char getNextPlayer(char currentPlayer)
+        {
+            return currentPlayer == PLAYER_1 ? PLAYER_1 : PLAYER_2;
         }
 
         static bool CheckWin(char[,] board, char player)
