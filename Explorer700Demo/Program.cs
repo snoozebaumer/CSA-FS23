@@ -96,9 +96,9 @@ namespace Explorer700Demo
         {
             screen.Clear(Color.Black);
             screen.DrawString(" " + board[0, 0] + " | " + board[0, 1] + " | " + board[0, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 0);
-            screen.DrawString("---+---+---", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 10);
+            screen.DrawString("--+--+--", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 10);
             screen.DrawString(" " + board[1, 0] + " | " + board[1, 1] + " | " + board[1, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 20);
-            screen.DrawString("---+---+---", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 30);
+            screen.DrawString("--+--+--", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 30);
             screen.DrawString(" " + board[2, 0] + " | " + board[2, 1] + " | " + board[2, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 40);
             exp.Display.Update();
         }
