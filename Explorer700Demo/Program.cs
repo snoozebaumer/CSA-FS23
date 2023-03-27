@@ -1,9 +1,6 @@
 ﻿using Explorer700Library;
 using System;
 using System.Drawing;
-using System.IO;
-using System.Reflection;
-using System.Threading;
 
 namespace Explorer700Demo
 {
@@ -20,9 +17,9 @@ namespace Explorer700Demo
 
             // Define the Tic Tac Toe board
             char[,] board = new char[,] {
-                { ' ', ' ', ' ' },
-                { ' ', ' ', ' ' },
-                { ' ', ' ', ' ' }
+                { '-', '-', '-' },
+                { '-', '-', '-' },
+                { '-', '-', '-' }
             };
 
             // Define the players
