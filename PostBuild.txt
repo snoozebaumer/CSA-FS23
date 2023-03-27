@@ -1,0 +1,8 @@
+
+Achtung SecureUpload.exe muss im Solution Verzeichnis abgelegt werden (dort wo sich die *.sln Datei befindet).
+
+PostBuild für die .NET Projekte:
+--------------------------------
+
+cd $(TargetDir)
+"$(SolutionDir)\SecureUpload.exe" . pi-hslu:netcore/$(ProjectName)
