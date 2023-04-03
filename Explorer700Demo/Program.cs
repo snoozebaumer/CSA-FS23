@@ -8,8 +8,8 @@ namespace Explorer700Demo
     public class Program
     {
         static Explorer700 exp = new Explorer700();
-        static char PLAYER_1 = 'X';
-        static char PLAYER_2 = 'O';
+        const char PLAYER_1 = 'X';
+        const char PLAYER_2 = 'O';
 
         static void Main(string[] args)
         {
@@ -64,7 +64,6 @@ namespace Explorer700Demo
                     {
                         // Valid move, place X on board and switch to player 2
                         board[row, col] = currentPlayer;
-                        currentPlayer = getNextPlayer(currentPlayer);
                         moveMade = true;
                     }
 
@@ -76,19 +75,32 @@ namespace Explorer700Demo
                 // Check for a win or tie
                 if (CheckWin(board, currentPlayer))
                 {
-                    Console.WriteLine($"Player {currentPlayer} wins!");
+                    DrawWinOrTie(screen, currentPlayer, true);
                     gameOver = true;
                 }
                 else if (CheckTie(board))
                 {
-                    Console.WriteLine("Tie game!");
+                    DrawWinOrTie(screen, currentPlayer, false);
                     gameOver = true;
+                }
+                else
+                {
+                    currentPlayer = getNextPlayer(currentPlayer);
                 }
             }
 
             // Wait for user input
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
+        }
+
+        static void DrawWinOrTie(Graphics screen, char currentPlayer, bool win)
+        {
+            String txt = win ? currentPlayer + " wins!" : "Game tied";
+
+            screen.DrawString(txt, new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 60, 20);
+
+            exp.Display.Update();
         }
 
         static void DrawBoard(Graphics screen, char[,] board, (int row, int col) currentCoords)
