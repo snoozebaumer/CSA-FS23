@@ -105,7 +105,7 @@ namespace Explorer700Demo
 
         static char getNextPlayer(char currentPlayer)
         {
-            return currentPlayer == PLAYER_1 ? PLAYER_1 : PLAYER_2;
+            return currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
         }
 
         static bool CheckWin(char[,] board, char player)
