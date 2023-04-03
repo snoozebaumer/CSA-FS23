@@ -27,7 +27,7 @@ namespace Explorer700Demo
             
             char currentPlayer = PLAYER_1;
 
-            int col = 2;
+            int col = 0;
             int row = 0;
             // Draw the initial Tic Tac Toe board on the screen
             DrawBoard(screen, board, (col, row));
@@ -69,7 +69,7 @@ namespace Explorer700Demo
                     }
 
                     // Update the display
-                    DrawBoard(screen, board, (col, row));
+                    DrawBoard(screen, board, (row, col));
                     Thread.Sleep(100);
                 }
 
@@ -91,16 +91,29 @@ namespace Explorer700Demo
             Console.ReadKey();
         }
 
-        static void DrawBoard(Graphics screen, char[,] board, (int col, int row) currentCoords)
+        static void DrawBoard(Graphics screen, char[,] board, (int row, int col) currentCoords)
         {
             //TODO: color cufrent position differently
             screen.Clear(Color.Black);
-            screen.DrawString(" " + board[0, 0] + " | " + board[0, 1] + " | " + board[0, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 0);
-            screen.DrawString("--+--+--", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 10);
-            screen.DrawString(" " + board[1, 0] + " | " + board[1, 1] + " | " + board[1, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 20);
-            screen.DrawString("--+--+--", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 30);
-            screen.DrawString(" " + board[2, 0] + " | " + board[2, 1] + " | " + board[2, 2] + " ", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, 40);
+
+            for (int i = 0;i < 3;i++)
+            {
+                screen.DrawString(board[i, 0].ToString() + GetPosSymbol(currentCoords, (i, 0)), new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 0, i * 20);
+                screen.DrawString("|", new Font(FontFamily.GenericSansSerif, 10), Brushes.Blue, 10, i * 20);
+                screen.DrawString(board[i, 1].ToString() + GetPosSymbol(currentCoords, (i, 1)), new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 20, i * 20);
+                screen.DrawString("|", new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 30, i * 20);
+                screen.DrawString(board[i, 2].ToString() + GetPosSymbol(currentCoords, (i, 2)), new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 40, i * 20);
+            }
+            
             exp.Display.Update();
+        }
+
+        static String GetPosSymbol((int row, int col) currentPosition, (int row, int col) currentCoords)
+        {
+            if (currentPosition.col == currentCoords.col && currentPosition.row == currentCoords.row)
+                return "I";
+            else
+                return "";
         }
 
         static char getNextPlayer(char currentPlayer)
