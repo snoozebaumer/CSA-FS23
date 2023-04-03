@@ -40,6 +40,7 @@ namespace Explorer700Demo
                 bool moveMade = false;
                 while (!moveMade)
                 {
+                    bool changed = false;
                     Keys keys = exp.Joystick.Keys;
                         
 
@@ -47,29 +48,36 @@ namespace Explorer700Demo
                     if ((keys & Keys.Left) != 0 && col > 0)
                     {
                         col--;
+                        changed = true;
                     }
                     else if ((keys & Keys.Right) != 0 && col < 2)
                     {
                         col++;
+                        changed = true;
                     }
                     else if ((keys & Keys.Up) != 0 && row > 0)
                     {
                         row--;
+                        changed = true;
                     }
                     else if ((keys & Keys.Down) != 0 && row < 2)
                     {
                         row++;
+                        changed = true;
                     }
                     else if ((keys & Keys.Center) != 0 && board[row, col] == '-')
                     {
                         // Valid move, place X on board and switch to player 2
                         board[row, col] = currentPlayer;
-                        moveMade = true;
+                        moveMade = changed = true;
                     }
 
                     // Update the display
-                    DrawBoard(screen, board, (row, col));
-                    Thread.Sleep(100);
+                    if(changed)
+                    {
+                        DrawBoard(screen, board, (row, col));
+                        Thread.Sleep(100);
+                    }
                 }
 
                 // Check for a win or tie
