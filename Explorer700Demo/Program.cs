@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Threading;
 
-namespace Explorer700Demo
+namespace TicTacToeExplorer700
 {
     public class Program
     {
@@ -13,71 +13,39 @@ namespace Explorer700Demo
 
         static void Main(string[] args)
         {
-            // Set up the screen
+            while (true)
+            {
+                playGame();
+            }
+        }
+
+        private static void playGame()
+        {
             var screen = exp.Display.Graphics;
 
-            // Define the Tic Tac Toe board
             char[,] board = new char[,] {
                 { '-', '-', '-' },
                 { '-', '-', '-' },
                 { '-', '-', '-' }
             };
 
-            // Define the players
-            
             char currentPlayer = PLAYER_1;
 
+            // start point definition, in this case top left
             int col = 0;
             int row = 0;
-            // Draw the initial Tic Tac Toe board on the screen
+
             DrawBoard(screen, board, (col, row));
 
-            // Play the game
+
             bool gameOver = false;
             while (!gameOver)
             {
-                // Wait for player 1 to move
+                // Wait for player to move
                 bool moveMade = false;
                 while (!moveMade)
                 {
-                    bool changed = false;
-                    Keys keys = exp.Joystick.Keys;
-                        
-
-                    // Check for joystick movements
-                    if ((keys & Keys.Left) != 0 && col > 0)
-                    {
-                        col--;
-                        changed = true;
-                    }
-                    else if ((keys & Keys.Right) != 0 && col < 2)
-                    {
-                        col++;
-                        changed = true;
-                    }
-                    else if ((keys & Keys.Up) != 0 && row > 0)
-                    {
-                        row--;
-                        changed = true;
-                    }
-                    else if ((keys & Keys.Down) != 0 && row < 2)
-                    {
-                        row++;
-                        changed = true;
-                    }
-                    else if ((keys & Keys.Center) != 0 && board[row, col] == '-')
-                    {
-                        // Valid move, place X on board and switch to player 2
-                        board[row, col] = currentPlayer;
-                        moveMade = changed = true;
-                    }
-
-                    // Update the display
-                    if(changed)
-                    {
-                        DrawBoard(screen, board, (row, col));
-                        Thread.Sleep(100);
-                    }
+                    moveMade = MakeMove(row, col, board, currentPlayer, screen, exp);
                 }
 
                 // Check for a win or tie
@@ -97,12 +65,57 @@ namespace Explorer700Demo
                 }
             }
 
-            // Wait for user input
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
+            Keys keys = exp.Joystick.Keys;
         }
 
-        static void DrawWinOrTie(Graphics screen, char currentPlayer, bool win)
+        private static bool MakeMove(int row, int col, char[,] board, char currentPlayer, Graphics screen, Explorer700 exp)
+        {
+            bool moveMade = false;
+            bool changed = false;
+            Keys keys = exp.Joystick.Keys;
+
+            switch (keys)
+            {
+                case Keys.Left when col > 0:
+                    col--;
+                    changed = true;
+                    break;
+                case Keys.Right when col < 2:
+                    col++;
+                    changed = true;
+                    break;
+                case Keys.Up when row > 0:
+                    row--;
+                    changed = true;
+                    break;
+                case Keys.Down when row < 2:
+                    row++;
+                    changed = true;
+                    break;
+                case Keys.Center when CheckForValidMove(row, col, board, currentPlayer):
+                    // Valid move, place sign on board and switch to player
+                    board[row, col] = currentPlayer;
+                    changed = moveMade = true;
+                    break;
+            }
+
+            // Update the display
+            if (changed)
+            {
+                DrawBoard(screen, board, (row, col));
+                Thread.Sleep(100);
+            }
+
+            return moveMade;
+        }
+
+        private static bool CheckForValidMove(int row, int col, char[,] board, char currentPlayer)
+        {
+            return board[row, col] == '-';
+        }
+
+
+        private static void DrawWinOrTie(Graphics screen, char currentPlayer, bool win)
         {
             String txt = win ? currentPlayer + " wins!" : "Game tied";
 
@@ -111,9 +124,8 @@ namespace Explorer700Demo
             exp.Display.Update();
         }
 
-        static void DrawBoard(Graphics screen, char[,] board, (int row, int col) currentCoords)
+        private static void DrawBoard(Graphics screen, char[,] board, (int row, int col) currentCoords)
         {
-            //TODO: color cufrent position differently
             screen.Clear(Color.Black);
 
             for (int i = 0;i < 3;i++)
@@ -128,7 +140,7 @@ namespace Explorer700Demo
             exp.Display.Update();
         }
 
-        static String GetPosSymbol((int row, int col) currentPosition, (int row, int col) currentCoords)
+        private static String GetPosSymbol((int row, int col) currentPosition, (int row, int col) currentCoords)
         {
             if (currentPosition.col == currentCoords.col && currentPosition.row == currentCoords.row)
                 return "I";
@@ -136,12 +148,12 @@ namespace Explorer700Demo
                 return "";
         }
 
-        static char getNextPlayer(char currentPlayer)
+        private static char getNextPlayer(char currentPlayer)
         {
             return currentPlayer == PLAYER_1 ? PLAYER_2 : PLAYER_1;
         }
 
-        static bool CheckWin(char[,] board, char player)
+        private static bool CheckWin(char[,] board, char player)
         {
             // Check rows
             for (int row = 0; row < 3; row++)
@@ -174,7 +186,7 @@ namespace Explorer700Demo
             return false;
         }
 
-        static bool CheckTie(char[,] board)
+        private static bool CheckTie(char[,] board)
         {
             // Check if all cells are filled
             for (int row = 0; row < 3; row++)
@@ -189,7 +201,6 @@ namespace Explorer700Demo
                 }
             }
 
-            // All cells are filled and no player has won, game is tied
             return true;
         }
     }
