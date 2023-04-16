@@ -16,6 +16,9 @@ namespace TicTacToeExplorer700
             while (true)
             {
                 playGame();
+
+                // timeout after game ended, so it doens't place sign in next game on imput that wants to start next game
+                Thread.Sleep(200);
             }
         }
 
@@ -63,6 +66,7 @@ namespace TicTacToeExplorer700
                     DrawWinOrTie(screen, currentPlayer, false);
 
                     //try to prevent starting new game through previous input
+                    Thread.Sleep(200);
                     gameOver = true;
                 }
                 else
