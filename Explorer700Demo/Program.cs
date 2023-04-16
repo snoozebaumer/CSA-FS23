@@ -65,7 +65,13 @@ namespace TicTacToeExplorer700
                 }
             }
 
+            // wait for Joystick Keys input
             Keys keys = exp.Joystick.Keys;
+            while (keys == Keys.NoKey)
+            {
+                keys = exp.Joystick.Keys;
+            }
+            
         }
 
         private static bool MakeMove(int row, int col, char[,] board, char currentPlayer, Graphics screen, Explorer700 exp)
@@ -119,7 +125,7 @@ namespace TicTacToeExplorer700
         {
             String txt = win ? currentPlayer + " wins!" : "Game tied";
 
-            screen.DrawString(txt, new Font(FontFamily.GenericSansSerif, 10), Brushes.White, 60, 20);
+            screen.DrawString(txt, new Font(FontFamily.GenericSansSerif, 9), Brushes.White, 60, 20);
 
             exp.Display.Update();
         }
