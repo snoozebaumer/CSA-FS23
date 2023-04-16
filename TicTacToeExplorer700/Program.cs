@@ -17,7 +17,7 @@ namespace TicTacToeExplorer700
             {
                 playGame();
 
-                // timeout after game ended, so it doens't place sign in next game on imput that wants to start next game
+                // timeout after game ended, so it doens't place sign in next game on input that wants to start next game
                 Thread.Sleep(200);
             }
         }
