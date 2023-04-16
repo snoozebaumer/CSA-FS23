@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorld", "HelloWorld\He
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Explorer700Library", "Explorer700Library\Explorer700Library.csproj", "{074ECD7F-9E05-4F37-97D2-B13416A65E73}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToeExplorer700", "Explorer700Demo\TicTacToeExplorer700.csproj", "{117619CB-5133-4F7F-ADB5-CC95C2ACE643}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToeExplorer700", "TicTacToeExplorer700\TicTacToeExplorer700.csproj", "{117619CB-5133-4F7F-ADB5-CC95C2ACE643}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
