@@ -45,7 +45,7 @@ namespace TicTacToeExplorer700
                 bool moveMade = false;
                 while (!moveMade)
                 {
-                    moveMade = MakeMove(row, col, board, currentPlayer, screen, exp);
+                    moveMade = MakeMove(ref row, ref col, board, currentPlayer, screen, exp);
                 }
 
                 // Check for a win or tie
@@ -74,7 +74,7 @@ namespace TicTacToeExplorer700
             
         }
 
-        private static bool MakeMove(int row, int col, char[,] board, char currentPlayer, Graphics screen, Explorer700 exp)
+        private static bool MakeMove(ref int row,ref int col, char[,] board, char currentPlayer, Graphics screen, Explorer700 exp)
         {
             bool moveMade = false;
             bool changed = false;
