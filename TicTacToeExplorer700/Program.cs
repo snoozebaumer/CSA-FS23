@@ -53,10 +53,16 @@ namespace TicTacToeExplorer700
                 {
                     DrawWinOrTie(screen, currentPlayer, true);
                     gameOver = true;
+
+                    //try to prevent starting new game through previous input
+                    Thread.Sleep(200);
+
                 }
                 else if (CheckTie(board))
                 {
                     DrawWinOrTie(screen, currentPlayer, false);
+
+                    //try to prevent starting new game through previous input
                     gameOver = true;
                 }
                 else
@@ -109,7 +115,9 @@ namespace TicTacToeExplorer700
             if (changed)
             {
                 DrawBoard(screen, board, (row, col));
-                Thread.Sleep(100);
+
+                //try to prevent double input
+                Thread.Sleep(200);
             }
 
             return moveMade;
