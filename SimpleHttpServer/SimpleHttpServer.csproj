@@ -5,4 +5,8 @@
     <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="cd $(TargetDir)&#xD;&#xA;&quot;$(SolutionDir)\SecureUpload.exe&quot; . pi-home:netcore/$(ProjectName)" />
+	</Target>
+
 </Project>

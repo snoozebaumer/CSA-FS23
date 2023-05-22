@@ -15,7 +15,7 @@ namespace StartHttpServer {
             Console.WriteLine("Content: {0}", projectDirectory);
             Process.Start(new ProcessStartInfo() {
                 FileName = "dotnet",
-                Arguments = "SimpleHttpServer.dll " + projectDirectory + "/logs.txt"
+                Arguments = "SimpleHttpServer.dll " + "logs.txt"
             });
         }
     }
