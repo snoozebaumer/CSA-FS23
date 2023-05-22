@@ -1,12 +1,16 @@
 ﻿using Explorer700Library;
 using System;
 using System.Drawing;
+using System.IO;
+using System.Reflection.PortableExecutable;
 using System.Threading;
 
 namespace TicTacToeExplorer700
 {
     public class Program
     {
+        private const string logFileName = "../StartHttpServer/logs.txt";
+        private const string logHeader = "// Logs from Application - Team 01";
         static Explorer700 exp = new Explorer700();
         const char PLAYER_1 = 'X';
         const char PLAYER_2 = 'O';
@@ -118,6 +122,9 @@ namespace TicTacToeExplorer700
             // Update the display
             if (changed)
             {
+                // log the key movement to text file, part of testat nr. 2
+                LogAction(keys);
+
                 DrawBoard(screen, board, (row, col));
 
                 //try to prevent double input
@@ -125,6 +132,31 @@ namespace TicTacToeExplorer700
             }
 
             return moveMade;
+        }
+
+        private static void LogAction(Keys keys)
+        {
+            string logEntry = $"Joystick: {keys.ToString()}: {DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss")}";
+
+            try
+            {
+                if (!File.Exists(logFileName))
+                {
+                    using (StreamWriter writer = File.CreateText(logFileName))
+                    {
+                        writer.WriteLine(logHeader);
+                    }
+                }
+
+                using (StreamWriter writer = File.AppendText(logFileName))
+                {
+                    writer.WriteLine(logEntry);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while logging: " + ex.Message);
+            }
         }
 
         private static bool CheckForValidMove(int row, int col, char[,] board, char currentPlayer)
